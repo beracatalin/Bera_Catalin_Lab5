@@ -10,6 +10,7 @@
     <Window.Resources>
         <CollectionViewSource x:Key="customerViewSource" d:DesignSource="{d:DesignInstance {x:Type AutoLotModel:Customer}, CreateList=True}"/>
         <CollectionViewSource x:Key="inventoryViewSource" d:DesignSource="{d:DesignInstance {x:Type AutoLotModel:Inventory}, CreateList=True}"/>
+        <CollectionViewSource x:Key="customerOrdersViewSource" Source="{Binding Orders, Source={StaticResource customerViewSource}}"/>
     </Window.Resources>
     <Grid>
         <TabControl x:Name="tbCtrlAutoLot" HorizontalAlignment="Left" Height="354" Margin="50,43,0,0" VerticalAlignment="Top" Width="716">
@@ -102,7 +103,52 @@
 
             </TabItem>
             <TabItem Header="Orders">
-                <Grid Background="#FFE5E5E5"/>
+                <Grid Background="#FFE5E5E5" DataContext="{StaticResource customerOrdersViewSource}">
+                    <ComboBox x:Name="cmbCustomers" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120">
+                        <ComboBox.ItemTemplate>
+                            <DataTemplate>
+                                <TextBlock>
+                                    <TextBlock.Text>
+                                        <MultiBinding StringFormat="{}{0} {1}">
+                                            <Binding Path="FirstName"/>
+                                            <Binding Path="LastName"/>
+                                        </MultiBinding>
+                                    </TextBlock.Text>
+                                </TextBlock>
+                            </DataTemplate>
+                        </ComboBox.ItemTemplate>
+                    </ComboBox>
+                    <ComboBox x:Name="cmbInventory" HorizontalAlignment="Left" VerticalAlignment="Top" Width="120">
+                        <ComboBox.ItemTemplate>
+ <DataTemplate>
+ <TextBlock>
+ <TextBlock.Text>
+ <MultiBinding StringFormat="{}{0} - {1}">
+ <Binding Path="Make"/>
+ <Binding Path="Color"/>
+ </MultiBinding>
+ </TextBlock.Text>
+ </TextBlock>
+ </DataTemplate>
+ </ComboBox.ItemTemplate>
+ </ComboBox>
+                    <Button x:Name="btnNewOrder" Content="New" HorizontalAlignment="Left" Height="28" Margin="20,28,0,0" VerticalAlignment="Top" Width="77"/>
+                    <Button x:Name="btnEditOrder" Content="Edit" HorizontalAlignment="Left" Height="28" Margin="20,81,0,0" VerticalAlignment="Top" Width="77"/>
+                    <Button x:Name="btnDeleteOrder" Content="Delete" HorizontalAlignment="Left" Height="28" Margin="20,129,0,0" VerticalAlignment="Top" Width="77"/>
+                    <Button x:Name="btnSaveOrder" Content="Save" HorizontalAlignment="Left" Height="28" Margin="20,211,0,0" VerticalAlignment="Top" Width="77"/>
+                    <Button x:Name="btnCancelOrder" Content="Cancel" HorizontalAlignment="Left" Height="28" Margin="20,253,0,0" VerticalAlignment="Top" Width="77"/>
+                    <Button x:Name="btnPreviousOrder" Content="Previous" HorizontalAlignment="Left" Height="28" Margin="201,138,0,0" VerticalAlignment="Top" Width="77" Grid.Column="1"/>
+                    <Button x:Name="btnNextOrder" Content="Next" HorizontalAlignment="Left" Height="28" Margin="524,138,0,0" VerticalAlignment="Top" Width="77" Grid.Column="1"/>
+                    <DataGrid x:Name="ordersDataGrid" AutoGenerateColumns="False" EnableRowVirtualization="True" ItemsSource="{Binding}" Margin="300,10,10,116" RowDetailsVisibilityMode="VisibleWhenSelected">
+                        <DataGrid.Columns>
+                            <DataGridTextColumn x:Name="carIdColumn1" Binding="{Binding CarId}" Header="Car Id" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="custIdColumn2" Binding="{Binding CustId}" Header="Cust Id" Width="SizeToHeader"/>
+                            <DataGridTextColumn x:Name="orderIdColumn" Binding="{Binding OrderId}" Header="Order Id" Width="SizeToHeader"/>
+                        </DataGrid.Columns>
+                    </DataGrid>
+                    
+
+                </Grid>
             </TabItem>
         </TabControl>
 
